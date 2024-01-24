@@ -5,12 +5,17 @@
   width: 100%;
   max-width: 1440px;
   height: 586px;
+  overflow: hidden; // pour enlever la bare de défilement d'apparaitre au changement d'image
   .SlideCard {
     width: 100%;
     left: 0;
     top: 0;
     position: absolute;
     transition: opacity 1s;
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
     &--hide {
       opacity: 0;
     }

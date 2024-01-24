@@ -8,20 +8,27 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
-    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
+  // Erreur : Ordre Décroissant
+    new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
   );
+  // erreur : setTimeout & byDateDesc.length undefined
   const nextCard = () => {
-    setIndex((prevIndex) => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0));
+    // ajout de if (byDateDesc)
+    if (byDateDesc) {
+    setTimeout(
+      // ajout de -1 a byDateDesc.length
+      () => setIndex(index < byDateDesc.length -1 ? index + 1 : 0),
+      5000
+    );
+    }
   };
   useEffect(() => {
-    const timeOut = setTimeout(nextCard, 5000);
-  
-    return () => clearTimeout(timeOut);
-  }, [index,  nextCard]);
+    nextCard();
+  });
+  // Erreur : map key unique
   return (
     <div className="SlideCardList">
-      {byDateDesc?.map((event, idx) => (
-        <>
+      {byDateDesc?.map((event, idx) => (   
           <div
             key={event.title}
             className={`SlideCard SlideCard--${
@@ -37,20 +44,21 @@ const Slider = () => {
               </div>
             </div>
           </div>
+        ))}
           <div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
-              {byDateDesc.map((_, radioIdx) => (
+              {/* Erreur : key et checked */}
+              {byDateDesc?.map((dot, radioIdx) => (
                 <input
-                  key={event.id}
+                  key={dot.title}
                   type="radio"
                   name="radio-button"
                   checked={index === radioIdx}
+                  readOnly
                 />
               ))}
             </div>
           </div>
-        </>
-      ))}
     </div>
   );
 };

@@ -23,7 +23,8 @@ const Page = () => {
         <Slider />
       </section>
       <section className="ServicesContainer">
-        <h2 className="Title">Nos services</h2>
+        {/* ajout de l'id "nos-services" */}
+        <h2 className="Title" id="nos-services">Nos services</h2>
         <p>Nous organisons des événements sur mesure partout dans le monde</p>
         <div className="ListContainer">
           <ServiceCard imageSrc="/images/priscilla-du-preez-Q7wGvnbuwj0-unsplash1.png">
@@ -52,11 +53,13 @@ const Page = () => {
         </div>
       </section>
       <section className="EventsContainer">
-        <h2 className="Title">Nos réalisations</h2>
+        {/* ajout de l'id "nos-realisations" */}
+        <h2 className="Title" id="nos-realisations">Nos réalisations</h2>
         <EventList />
       </section>
       <section className="PeoplesContainer">
-        <h2 className="Title">Notre équipe</h2>
+        {/* ajout de l'id "notre équipe" */}
+        <h2 className="Title" id="notre-equipe">Notre équipe</h2>
         <p>Une équipe d’experts dédiés à l’ogranisation de vos événements</p>
         <div className="ListContainer">
           <PeopleCard
@@ -113,16 +116,20 @@ const Page = () => {
         </Modal>
       </div>
     </main>
-    <footer className="row">
+    <footer className="row" data-testid="footer-testid">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
-        <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
-          small
-          label="boom"
-        />
+        {/* Ajout de label?.type */}
+        {last && ( // ajout de "last &&" eventCard  ne sera rendu que si la variable last n'est pas undefined
+          <EventCard
+            data-testid="lastEvent"
+            imageSrc={last?.cover}
+            title={last?.title}
+            date={new Date(last?.date)}
+            small
+            label={last?.type}
+          />
+        )}
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
