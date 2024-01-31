@@ -8,23 +8,23 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
-  // Erreur : Ordre Décroissant
-    new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
+    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
   // erreur : setTimeout & byDateDesc.length undefined
   const nextCard = () => {
-    // ajout de if (byDateDesc)
-    if (byDateDesc) {
-    setTimeout(
-      // ajout de -1 a byDateDesc.length
-      () => setIndex(index < byDateDesc.length -1 ? index + 1 : 0),
-      5000
+    setIndex((prevIndex) =>
+    prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0
     );
+    };
+    useEffect(() => {
+    const timerId = setTimeout(() => nextCard(), 5000);
+    const handleKeyDown = (event) => {
+    if (event.keyCode === 32) {clearTimeout(timerId);
     }
-  };
-  useEffect(() => {
-    nextCard();
-  });
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => clearTimeout(timerId);
+    }, [index, byDateDesc]);
   // Erreur : map key unique
   return (
     <div className="SlideCardList">
@@ -50,7 +50,7 @@ const Slider = () => {
               {/* Erreur : key et checked */}
               {byDateDesc?.map((dot, radioIdx) => (
                 <input
-                  key={dot.title}
+                  key={`${dot.title}`}
                   type="radio"
                   name="radio-button"
                   checked={index === radioIdx}
